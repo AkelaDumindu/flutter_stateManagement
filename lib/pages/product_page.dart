@@ -3,6 +3,8 @@ import 'package:flutter_state_management/data/product_data.dart';
 import 'package:flutter_state_management/model/product_model.dart';
 import 'package:flutter_state_management/pages/favourite_page.dart';
 import 'package:flutter_state_management/pages/shopping_page.dart';
+import 'package:flutter_state_management/providers/cart_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key});
@@ -64,35 +66,44 @@ class ProductPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final Product product = products[index];
           return Card(
-            child: ListTile(
-              title: Row(
-                children: [
-                  Text(
-                    product.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+            //we use provider add item aftr clicking button so we use consumer for listtile
+            child: Consumer(
+              builder: (BuildContext context, CartProvider cartProvider,
+                  Widget? child) {
+                return ListTile(
+                  title: Row(
+                    children: [
+                      Text(
+                        product.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(width: 50),
+                      Text("0"),
+                    ],
                   ),
-                  const SizedBox(width: 50),
-                  Text("0"),
-                ],
-              ),
-              subtitle: Text("\$${product.price.toString()}"),
+                  subtitle: Text("\$${product.price.toString()}"),
 
-              // right corner elements
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.favorite),
+                  // right corner elements
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.favorite),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          cartProvider.addItem(
+                              product.id, product.price, product.name);
+                        },
+                        icon: Icon(Icons.shopping_cart),
+                      ),
+                    ],
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.shopping_cart),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           );
         },
