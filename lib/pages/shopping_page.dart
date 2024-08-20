@@ -73,6 +73,28 @@ class ShoppingPage extends StatelessWidget {
                   },
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  "Total: \$${cartProvider.cartTotal.toStringAsFixed(2)}",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: ElevatedButton(
+                  onPressed: () {
+                    cartProvider.cartClear();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Cart Cleared!'),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                  },
+                  child: Text("Cart Clear"),
+                ),
+              ),
             ],
           );
         }));
