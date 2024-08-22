@@ -4,6 +4,7 @@ import 'package:flutter_state_management/model/product_model.dart';
 import 'package:flutter_state_management/pages/favourite_page.dart';
 import 'package:flutter_state_management/pages/shopping_page.dart';
 import 'package:flutter_state_management/providers/cart_provider.dart';
+import 'package:flutter_state_management/providers/favourite_provider.dart';
 import 'package:provider/provider.dart';
 
 class ProductPage extends StatelessWidget {
@@ -67,9 +68,9 @@ class ProductPage extends StatelessWidget {
           final Product product = products[index];
           return Card(
             //we use provider add item aftr clicking button so we use consumer for listtile
-            child: Consumer(
+            child: Consumer2<CartProvider, FavouriteProvider>(
               builder: (BuildContext context, CartProvider cartProvider,
-                  Widget? child) {
+                  FavouriteProvider favouriteProvider, Widget? child) {
                 return ListTile(
                   title: Row(
                     children: [
@@ -92,9 +93,26 @@ class ProductPage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          favouriteProvider.toggleFavourite(product.id);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                favouriteProvider.isFavourite(product.id)
+                                    ? "Added to favourite"
+                                    : "Remove From favourite",
+                              ),
+                              duration: Duration(seconds: 1),
+                            ),
+                          );
+                        },
                         icon: Icon(
-                          Icons.favorite,
+                          favouriteProvider.isFavourite(product.id)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: favouriteProvider.isFavourite(product.id)
+                              ? Colors.pinkAccent
+                              : Colors.grey,
                         ),
                       ),
                       IconButton(
