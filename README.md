@@ -21,5 +21,5 @@ This application is a small project developed to practice and master Flutter sta
 
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/yourusername/flutter-cart-favorites.git  
+   git clone https://github.com/AkelaDumindu/flutter_stateManagement.git 
 
